@@ -6,6 +6,7 @@ import com.dokuny.cvs_payment.dto.PayRequest;
 import com.dokuny.cvs_payment.dto.PayResponse;
 import com.dokuny.cvs_payment.service.ConveniencePayService;
 import com.dokuny.cvs_payment.type.ConvenienceType;
+import com.dokuny.cvs_payment.type.PayMethodType;
 
 public class UserClient {
     public static void main(String[] args) {
@@ -13,12 +14,12 @@ public class UserClient {
         ConveniencePayService conveniencePayService = new ConveniencePayService();
 
         // 결제 1000원
-        PayRequest payRequest = new PayRequest(ConvenienceType.GS25, 1000);
+        PayRequest payRequest = new PayRequest(PayMethodType.MONEY,ConvenienceType.GS25, 1000);
         PayResponse payResponse = conveniencePayService.pay(payRequest);
 
         System.out.println(payResponse);
         // 취소 500원
-        PayCancelRequest payCancelRequest = new PayCancelRequest(ConvenienceType.CU, 500);
+        PayCancelRequest payCancelRequest = new PayCancelRequest(PayMethodType.CARD,ConvenienceType.CU, 500);
         PayCancelResponse payCancelResponse = conveniencePayService.payCancel(payCancelRequest);
         System.out.println(payCancelResponse);
 

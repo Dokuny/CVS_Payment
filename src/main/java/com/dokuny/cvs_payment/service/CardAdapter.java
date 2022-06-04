@@ -1,9 +1,11 @@
 package com.dokuny.cvs_payment.service;
 
+import com.dokuny.cvs_payment.type.CancelPaymentResult;
 import com.dokuny.cvs_payment.type.CardUseCancelResult;
 import com.dokuny.cvs_payment.type.CardUseResult;
+import com.dokuny.cvs_payment.type.PaymentResult;
 
-public class CardAdapter {
+public class CardAdapter implements PaymentInterface {
 
     // 1. 인증
     public void authorization() {
@@ -34,5 +36,19 @@ public class CardAdapter {
         return CardUseCancelResult.USE_CANCEL_SUCCESS;
     }
 
+    @Override
+    public PaymentResult payment(Integer payAmount) {
+        authorization();
+        approval();
+        CardUseResult cardUseResult = capture(payAmount);
+        if(cardUseResult == CardUseResult.USE_FAIL) return PaymentResult.PAYMENT_FAIL;
+        return PaymentResult.PAYMENT_SUCCESS;
+    }
 
+    @Override
+    public CancelPaymentResult cancelPayment(Integer cancelPayAmount) {
+        CardUseCancelResult cardUseCancelResult = cancelCapture(cancelPayAmount);
+        if (cardUseCancelResult == CardUseCancelResult.USE_CANCEL_FAIL) return CancelPaymentResult.CANCEL_PAYMENT_FAIL;
+        return CancelPaymentResult.CANCEL_PAYMENT_SUCCESS;
+    }
 }

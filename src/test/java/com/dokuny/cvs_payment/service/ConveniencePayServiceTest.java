@@ -6,6 +6,7 @@ import com.dokuny.cvs_payment.type.ConvenienceType;
 import com.dokuny.cvs_payment.dto.PayRequest;
 import com.dokuny.cvs_payment.dto.PayResponse;
 import com.dokuny.cvs_payment.type.PayCancelResult;
+import com.dokuny.cvs_payment.type.PayMethodType;
 import com.dokuny.cvs_payment.type.PayResult;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +19,7 @@ class ConveniencePayServiceTest {
     @Test
     void pay_success() {
         //given
-        PayRequest payRequest = new PayRequest(ConvenienceType.CU, 100);
+        PayRequest payRequest = new PayRequest(PayMethodType.MONEY,ConvenienceType.CU, 100);
 
         //when
         PayResponse payResponse = conveniencePayService.pay(payRequest);
@@ -31,7 +32,7 @@ class ConveniencePayServiceTest {
     @Test
     void pay_fail() {
         //given
-        PayRequest payRequest = new PayRequest(ConvenienceType.CU, 1000_001);
+        PayRequest payRequest = new PayRequest(PayMethodType.MONEY,ConvenienceType.CU, 1000_001);
 
         //when
         PayResponse payResponse = conveniencePayService.pay(payRequest);
@@ -45,7 +46,7 @@ class ConveniencePayServiceTest {
     @Test
     void pay_cancel_success() {
         //given
-        PayCancelRequest payCancelRequest = new PayCancelRequest(ConvenienceType.CU, 101);
+        PayCancelRequest payCancelRequest = new PayCancelRequest(PayMethodType.MONEY,ConvenienceType.CU, 101);
 
         //when
         PayCancelResponse payCancelResponse = conveniencePayService.payCancel(payCancelRequest);
@@ -58,7 +59,7 @@ class ConveniencePayServiceTest {
     @Test
     void pay_cancel_fail() {
         //given
-        PayCancelRequest payCancelRequest = new PayCancelRequest(ConvenienceType.CU, 99);
+        PayCancelRequest payCancelRequest = new PayCancelRequest(PayMethodType.MONEY,ConvenienceType.CU, 99);
 
         //when
         PayCancelResponse payCancelResponse = conveniencePayService.payCancel(payCancelRequest);
