@@ -1,9 +1,6 @@
 package com.dokuny.cvs_payment.service;
 
-import com.dokuny.cvs_payment.type.CancelPaymentResult;
-import com.dokuny.cvs_payment.type.CardUseCancelResult;
-import com.dokuny.cvs_payment.type.CardUseResult;
-import com.dokuny.cvs_payment.type.PaymentResult;
+import com.dokuny.cvs_payment.type.*;
 
 public class CardAdapter implements PaymentInterface {
 
@@ -43,6 +40,11 @@ public class CardAdapter implements PaymentInterface {
         CardUseResult cardUseResult = capture(payAmount);
         if(cardUseResult == CardUseResult.USE_FAIL) return PaymentResult.PAYMENT_FAIL;
         return PaymentResult.PAYMENT_SUCCESS;
+    }
+
+    @Override
+    public PayMethodType getPayMethodType() {
+        return PayMethodType.CARD;
     }
 
     @Override

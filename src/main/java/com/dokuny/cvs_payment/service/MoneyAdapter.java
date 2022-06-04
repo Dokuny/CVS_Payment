@@ -1,11 +1,13 @@
 package com.dokuny.cvs_payment.service;
 
-import com.dokuny.cvs_payment.type.CancelPaymentResult;
-import com.dokuny.cvs_payment.type.MoneyUseCancelResult;
-import com.dokuny.cvs_payment.type.MoneyUseResult;
-import com.dokuny.cvs_payment.type.PaymentResult;
+import com.dokuny.cvs_payment.type.*;
 
 public class MoneyAdapter implements PaymentInterface {
+    @Override
+    public PayMethodType getPayMethodType() {
+        return PayMethodType.MONEY;
+    }
+
     public MoneyUseResult use(Integer payAmount) {
         System.out.println("MoneyAdapter.use : " + payAmount);
 
