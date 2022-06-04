@@ -1,18 +1,27 @@
 package com.dokuny.cvs_payment.service;
 
 import com.dokuny.cvs_payment.dto.*;
-import com.dokuny.cvs_payment.type.MoneyUseCancelResult;
-import com.dokuny.cvs_payment.type.MoneyUseResult;
-import com.dokuny.cvs_payment.type.PayCancelResult;
-import com.dokuny.cvs_payment.type.PayResult;
+import com.dokuny.cvs_payment.type.*;
 
 public class ConveniencePayService {
+
     private final MoneyAdapter moneyAdapter = new MoneyAdapter();
+    private final CardAdapter cardAdapter = new CardAdapter();
+
     public PayResponse pay(PayRequest payRequest) {
-        MoneyUseResult moneyUseResult = moneyAdapter.use(payRequest.getPayAmount());
+        CardUseResult cardUseResult=null;
+        MoneyUseResult moneyUseResult=null;
+
+        if (payRequest.getPayMethodType() == PayMethodType.CARD) {
+            cardAdapter.authorization();
+            cardAdapter.approval();
+            cardUseResult = cardAdapter.capture(payRequest.getPayAmount());
+        } else {
+            moneyUseResult = moneyAdapter.use(payRequest.getPayAmount());
+        }
 
         // fail fast
-        if (moneyUseResult == MoneyUseResult.USE_FAIL) {
+        if (cardUseResult == CardUseResult.USE_FAIL||moneyUseResult == MoneyUseResult.USE_FAIL) {
             return new PayResponse(PayResult.FAIL, 0);
         }
 
