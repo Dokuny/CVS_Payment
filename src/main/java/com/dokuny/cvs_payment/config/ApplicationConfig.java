@@ -1,28 +1,38 @@
 package com.dokuny.cvs_payment.config;
 
 import com.dokuny.cvs_payment.service.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
+@Configuration
 public class ApplicationConfig {
 
-    public ConveniencePayService conveniencePayServiceDiscountConvenience() {
+    @Bean
+    public ConveniencePayService conveniencePayService() {
         return new ConveniencePayService(
                 new HashSet<>(
-                        Arrays.asList(new MoneyAdapter(), new CardAdapter())
+                        Arrays.asList(moneyAdapter(),cardAdapter())
                 ),
-                new DiscountByConvenience()
+               discountByConvenience()
         );
     }
 
-    public ConveniencePayService conveniencePayServiceDiscountPayMethod() {
-        return new ConveniencePayService(
-                new HashSet<>(
-                        Arrays.asList(new MoneyAdapter(), new CardAdapter())
-                ),
-                new DiscountByPayMethod()
-        );
+    @Bean
+    public MoneyAdapter moneyAdapter() {
+        return new MoneyAdapter();
+    }
+
+    @Bean
+    public CardAdapter cardAdapter() {
+        return new CardAdapter();
+    }
+
+    @Bean
+    public DiscountByConvenience discountByConvenience() {
+        return new DiscountByConvenience();
     }
 
 }

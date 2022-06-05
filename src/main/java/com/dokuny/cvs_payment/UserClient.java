@@ -8,17 +8,24 @@ import com.dokuny.cvs_payment.dto.PayResponse;
 import com.dokuny.cvs_payment.service.ConveniencePayService;
 import com.dokuny.cvs_payment.type.ConvenienceType;
 import com.dokuny.cvs_payment.type.PayMethodType;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class UserClient {
     public static void main(String[] args) {
 
-        ApplicationConfig applicationConfig = new ApplicationConfig();
+        ApplicationContext applicationContext =
+                new AnnotationConfigApplicationContext(ApplicationConfig.class);
+
+
         // 사용자 -> 편의점 결제 서비스 -> 머니
         ConveniencePayService conveniencePayService =
-                applicationConfig.conveniencePayServiceDiscountPayMethod();
+                applicationContext.getBean("conveniencePayService",
+                        ConveniencePayService.class);
 
         // 결제 1000원
-        PayRequest payRequest = new PayRequest(PayMethodType.CARD,ConvenienceType.GS25, 50);
+        PayRequest payRequest =
+                new PayRequest(PayMethodType.CARD,ConvenienceType.GS25, 50);
         PayResponse payResponse = conveniencePayService.pay(payRequest);
 
         System.out.println(payResponse);
@@ -26,6 +33,7 @@ public class UserClient {
         PayCancelRequest payCancelRequest = new PayCancelRequest(PayMethodType.MONEY,ConvenienceType.CU, 500);
         PayCancelResponse payCancelResponse = conveniencePayService.payCancel(payCancelRequest);
         System.out.println(payCancelResponse);
+
 
     }
 }
